@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "power-bi-react-report-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/powerBiReactReport/PowerBiReactReportWebPart.js",
+          "manifest": "./src/webparts/powerBiReactReport/PowerBiReactReportWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "PowerBiReactReportWebPartStrings": "lib/webparts/powerBiReactReport/loc/{locale}.js"
+  }
+}

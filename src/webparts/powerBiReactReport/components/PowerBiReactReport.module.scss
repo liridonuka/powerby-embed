@@ -1,0 +1,55 @@
+@import "~office-ui-fabric-react/dist/sass/References.scss";
+
+.powerBiReactReport {
+  padding: 15px;
+  .loadingContainer {
+    //background-image: url("./../../assets/loading.gif");
+    background-position: center;
+    background-position-y: 100px;
+    background-repeat: no-repeat;
+    font-size: 24px;
+    color: red;
+  }
+
+  .messageContainer {
+    color: blue;
+    font-size: 18px;
+  }
+
+  .loadingContainer,
+  .messageContainer {
+    height: 480px;
+    padding: 24px;
+    border: 1px solid black;
+    text-align: center;
+  }
+
+  .embedContainer {
+    padding: 0px;
+  }
+
+  .column1 {
+    float: left;
+    display: inline;
+    width: 30%;
+  }
+  .column2 {
+    float: right;
+    display: inline;
+    width: 70%;
+  }
+  .navHeader {
+    color: #fff;
+    font-weight: bolder;
+    padding: 5px;
+    width: 95%;
+    background-color: rgb(3, 120, 124);
+    box-shadow: 1.5px 4px #888888;
+    border-bottom-right-radius: 5px;
+    //border-bottom-left-radius: 5px;
+  }
+  .links {
+    color: rgb(5, 46, 48);
+    font-weight: 600;
+  }
+}
