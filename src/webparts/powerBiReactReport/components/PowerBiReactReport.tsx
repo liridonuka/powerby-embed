@@ -132,13 +132,13 @@ export default class PowerBiReactReport extends React.Component<
   private embedReport() {
     let embedTarget: HTMLElement = document.getElementById("embed-container");
     if (!this.state.loading && !this.reportCannotRender()) {
-      // PowerBiService.GetReport(
-      //   this.props.serviceScope,
-      //   this.state.workspaceId,
-      //   this.state.reportId
-      // ).then((report: PowerBiReport) => {
-      //   PowerBiEmbeddingService.embedReport(report, embedTarget);
-      // });
+      PowerBiService.GetReport(
+        this.props.serviceScope,
+        this.state.workspaceId,
+        this.state.reportId
+      ).then((report: PowerBiReport) => {
+        PowerBiEmbeddingService.embedReport(report, embedTarget);
+      });
     }
   }
 }

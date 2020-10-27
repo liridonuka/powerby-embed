@@ -25,16 +25,6 @@ export class PowerBiService {
   private static adalAccessTokenStorageKey: string =
     "adal.access.token.keyhttps://analysis.windows.net/powerbi/api";
 
-  private static experimentLog = JSON.parse(
-    window.sessionStorage["experimentLogCache90036true"]
-  );
-
-  private static adalExtra: string =
-    window.sessionStorage[
-      PowerBiService.experimentLog["aadUserId"] +
-        `|455d03e1-a7c8-46c4-8bae-b2f70a9990ed|adal.access.token.key|https://analysis.windows.net/powerbi/api`
-    ];
-
   public static GetWorkspaces(
     serviceScope: ServiceScope
   ): Promise<PowerBiWorkspace[]> {
@@ -87,7 +77,8 @@ export class PowerBiService {
             name: report.name,
             webUrl: report.webUrl,
             datasetId: report.datasetId,
-            accessToken: PowerBiService.adalExtra,
+            accessToken:
+              window.sessionStorage[PowerBiService.adalAccessTokenStorageKey],
           };
         });
       });
@@ -104,6 +95,7 @@ export class PowerBiService {
       serviceScope,
       PowerBiService.powerbiApiResourceId
     );
+    console.log(window.sessionStorage);
     var reqHeaders: HeadersInit = new Headers();
     reqHeaders.append("Accept", "*");
     return pbiClient
@@ -115,19 +107,16 @@ export class PowerBiService {
       )
       .then(
         (reportsOdataResult: any): PowerBiReport => {
-          // const experimentLog = JSON.parse(
-          //   window.sessionStorage["experimentLogCache90036true"]
-          // );
-
-          console.log(window.sessionStorage);
-
           return {
             id: reportsOdataResult.id,
             embedUrl: reportsOdataResult.embedUrl,
             name: reportsOdataResult.name,
             webUrl: reportsOdataResult.webUrl,
             datasetId: reportsOdataResult.datasetId,
-            accessToken: PowerBiService.adalExtra,
+            accessToken:
+              window.sessionStorage[
+                "b3ccd8c2-9ea0-4934-8f3b-ea1df6ebbf3f|455d03e1-a7c8-46c4-8bae-b2f70a9990ed|adal.access.token.key|https://analysis.windows.net/powerbi/api"
+              ],
           };
         }
       );
@@ -161,7 +150,8 @@ export class PowerBiService {
               id: dashboard.id,
               embedUrl: dashboard.embedUrl,
               displayName: dashboard.displayName,
-              accessToken: PowerBiService.adalExtra,
+              accessToken:
+                window.sessionStorage[PowerBiService.adalAccessTokenStorageKey],
             };
           }
         );
@@ -200,7 +190,8 @@ export class PowerBiService {
             id: dashboardOdataResult.id,
             embedUrl: dashboardOdataResult.embedUrl,
             displayName: dashboardOdataResult.displayName,
-            accessToken: PowerBiService.adalExtra,
+            accessToken:
+              window.sessionStorage[PowerBiService.adalAccessTokenStorageKey],
           };
         }
       );
