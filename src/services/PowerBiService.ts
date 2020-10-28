@@ -95,7 +95,7 @@ export class PowerBiService {
       serviceScope,
       PowerBiService.powerbiApiResourceId
     );
-    console.log(window.sessionStorage);
+    //console.log(window.sessionStorage);
     var reqHeaders: HeadersInit = new Headers();
     reqHeaders.append("Accept", "*");
     return pbiClient

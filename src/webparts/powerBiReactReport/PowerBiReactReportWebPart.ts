@@ -65,7 +65,7 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
   }
 
   public render(): void {
-    console.log("PowerBiReactReportWebPart.render");
+    //console.log("PowerBiReactReportWebPart.render");
     const element: React.ReactElement<IPowerBiReactReportProps> = React.createElement(
       PowerBiReactReport,
       {

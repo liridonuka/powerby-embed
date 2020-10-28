@@ -14,4 +14,5 @@ export interface IPowerBiReactReportState {
   workspaceId: string;
   reportId: string;
   widthToHeight: number;
+  isOpen: boolean;
 }
