@@ -5,7 +5,7 @@ import {
   PowerBiDataset,
   PowerBiDashboardTile,
 } from "./../models/PowerBiModels";
-
+import { sp } from "sp-pnp-js";
 import { AadHttpClient, HttpClientResponse } from "@microsoft/sp-http";
 import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
 
@@ -83,8 +83,8 @@ export class PowerBiService {
         });
       });
   }
-
   public static GetReport(
+    guid: string,
     serviceScope: ServiceScope,
     workspaceId: string,
     reportId: string
@@ -95,7 +95,6 @@ export class PowerBiService {
       serviceScope,
       PowerBiService.powerbiApiResourceId
     );
-    //console.log(window.sessionStorage);
     var reqHeaders: HeadersInit = new Headers();
     reqHeaders.append("Accept", "*");
     return pbiClient
@@ -115,7 +114,7 @@ export class PowerBiService {
             datasetId: reportsOdataResult.datasetId,
             accessToken:
               window.sessionStorage[
-                "b3ccd8c2-9ea0-4934-8f3b-ea1df6ebbf3f|455d03e1-a7c8-46c4-8bae-b2f70a9990ed|adal.access.token.key|https://analysis.windows.net/powerbi/api"
+                `${guid}|c5636a7e-17e7-4b79-a408-aa85b681c577|adal.access.token.key|https://analysis.windows.net/powerbi/api`
               ],
           };
         }

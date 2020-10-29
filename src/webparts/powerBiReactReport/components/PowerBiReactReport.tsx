@@ -9,9 +9,12 @@ import {
   PowerBiWorkspace,
   PowerBiReport,
 } from "./../../../models/PowerBiModels";
+import * as pnp from "sp-pnp-js";
 import { PowerBiService } from "./../../../services/PowerBiService";
 import { PowerBiEmbeddingService } from "./../../../services/PowerBiEmbeddingService";
 import { Panel, PanelType } from "office-ui-fabric-react/lib/Panel";
+import { sp } from "sp-pnp-js";
+let guid;
 export default class PowerBiReactReport extends React.Component<
   IPowerBiReactReportProps,
   IPowerBiReactReportState
@@ -41,7 +44,13 @@ export default class PowerBiReactReport extends React.Component<
     let containerHeight =
       this.props.webPartContext.domElement.clientWidth /
       (this.state.widthToHeight / 100);
-
+    const mystyle = {
+      iframe: {
+        border: "none",
+        borderStyle: "none",
+        height: "800px",
+      },
+    };
     //console.log("PowerBiReactReport.render");
     return (
       <div className={styles.powerBiReactReport}>
@@ -106,7 +115,8 @@ export default class PowerBiReactReport extends React.Component<
             ) : (
               <div
                 id="embed-container"
-                className={styles.embedContainer}
+                //className={styles.embedContainer}
+                className={styles.desktopView}
                 style={{ height: containerHeight }}
               ></div>
             )}
@@ -120,9 +130,9 @@ export default class PowerBiReactReport extends React.Component<
             />
           </div>
         </div>
-        <div>
+        <div className={styles.powerBiReactReport}>
           <Panel
-            onOpened={() => this.embedReportPanel()}
+            onOpened={() => this.embedReport("embed-container1")}
             isOpen={this.state.isOpen}
             onDismiss={() => this.setState({ isOpen: false })}
             type={PanelType.smallFluid}
@@ -130,8 +140,9 @@ export default class PowerBiReactReport extends React.Component<
           >
             <div
               id="embed-container1"
-              className={styles.embedContainer}
-              style={{ height: 800 }}
+              //className={styles.embedContainer}
+              className={styles.desktopView}
+              style={mystyle.iframe}
             ></div>
           </Panel>
         </div>
@@ -141,34 +152,23 @@ export default class PowerBiReactReport extends React.Component<
 
   public componentDidMount() {
     console.log("componentDidUpdate");
-    this.embedReport();
+    this.embedReport("embed-container");
   }
 
-  // public componentDidUpdate(
-  //   prevProps: IPowerBiReactReportProps,
-  //   prevState: IPowerBiReactReportState,
-  //   prevContext: any
-  // ): void {
-  //   console.log("componentDidUpdate");
-  //   this.embedReport();
-  // }
-
-  private embedReport() {
-    let embedTarget: HTMLElement = document.getElementById("embed-container");
-    if (!this.state.loading && !this.reportCannotRender()) {
-      PowerBiService.GetReport(
-        this.props.serviceScope,
-        this.state.workspaceId,
-        this.state.reportId
-      ).then((report: PowerBiReport) => {
-        PowerBiEmbeddingService.embedReport(report, embedTarget);
-      });
-    }
+  public componentDidUpdate(
+    prevProps: IPowerBiReactReportProps,
+    prevState: IPowerBiReactReportState,
+    prevContext: any
+  ): void {
+    console.log("componentDidUpdate");
+    this.embedReport("embed-container");
   }
-  private embedReportPanel() {
-    let embedTarget: HTMLElement = document.getElementById("embed-container1");
+
+  private embedReport(embedContainer) {
+    let embedTarget: HTMLElement = document.getElementById(embedContainer);
     if (!this.state.loading && !this.reportCannotRender()) {
       PowerBiService.GetReport(
+        this.props.guid,
         this.props.serviceScope,
         this.state.workspaceId,
         this.state.reportId

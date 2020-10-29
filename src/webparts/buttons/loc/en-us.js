@@ -2,7 +2,7 @@ define([], function() {
   return {
     "PropertyPaneDescription": "Description",
     "BasicGroupName": "Group Name",
-    "DescriptionFieldLabel": "Description Field",
-    PropertyFieldLabel: "Specify GUID"
+    "DescriptionFieldLabel": "Specify second link",
+    'DescriptionFieldLabel1': "Specify second link"
   }
 });
