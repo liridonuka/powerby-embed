@@ -9,7 +9,10 @@ import {
   IPropertyPaneDropdownOption,
   PropertyPaneSlider,
 } from "@microsoft/sp-property-pane";
-import { sp } from "sp-pnp-js";
+//import { sp } from "sp-pnp-js";
+import pnp from "sp-pnp-js";
+// import { sp } from "@pnp/sp";
+// import "@pnp/sp/profiles";
 import { ServiceScope } from "@microsoft/sp-core-library";
 
 import PowerBiReactReport from "./components/PowerBiReactReport";
@@ -67,7 +70,7 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
 
   public render(): void {
     let ab = "";
-    this.GetUserProperties().then((i) => (ab = i));
+    // this.GetUserProperties().then((i) => (ab = i));
     console.log(ab);
     //console.log(a);
     //console.log("PowerBiReactReportWebPart.render");
@@ -198,11 +201,13 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
   }
   private async GetUserProperties() {
     let guid;
-    await sp.profiles.myProperties.get().then(async (result) => {
+    //const web = new Web(this.context.pageContext.web.absoluteUrl);
+    pnp.setup({ spfxContext: this.context });
+    await pnp.sp.profiles.myProperties.get().then(async (result) => {
       await result.UserProfileProperties.forEach(async (property) => {
         if (property.Key === "msOnline-ObjectId") {
           guid = await property.Value;
-          //guid = property.value;
+          //guid = property.value
           //return guid;
         }
       });

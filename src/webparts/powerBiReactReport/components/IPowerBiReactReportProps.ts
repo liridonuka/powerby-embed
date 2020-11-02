@@ -16,4 +16,13 @@ export interface IPowerBiReactReportState {
   reportId: string;
   widthToHeight: number;
   isOpen: boolean;
+  height: string;
+  width: string;
+  zIndex: number;
+  position: any;
+  buttonZIndex: number;
+  buttonPosition: any;
+  maxi: boolean;
+  iconName: string;
+  buttonLabel: string;
 }

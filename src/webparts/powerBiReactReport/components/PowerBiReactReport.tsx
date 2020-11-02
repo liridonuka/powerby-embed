@@ -29,6 +29,15 @@ export default class PowerBiReactReport extends React.Component<
     widthToHeight: this.props.defaultWidthToHeight,
     loading: false,
     isOpen: false,
+    height: "700px",
+    width: "100%",
+    zIndex: 0,
+    position: "unset",
+    buttonZIndex: 0,
+    buttonPosition: "unset",
+    maxi: false,
+    iconName: "OpenInNewTab",
+    buttonLabel: "Maximize",
   };
 
   private reportCannotRender(): Boolean {
@@ -46,9 +55,9 @@ export default class PowerBiReactReport extends React.Component<
       (this.state.widthToHeight / 100);
     const mystyle = {
       iframe: {
-        border: "none",
-        borderStyle: "none",
-        height: "800px",
+        //border: "1px solid black",
+        //borderStyle: "none",
+        height: "700px",
       },
     };
     //console.log("PowerBiReactReport.render");
@@ -116,21 +125,35 @@ export default class PowerBiReactReport extends React.Component<
               <div
                 id="embed-container"
                 //className={styles.embedContainer}
-                className={styles.desktopView}
-                style={{ height: containerHeight }}
+                //className={styles.desktopView}
+                style={{
+                  zIndex: this.state.zIndex,
+                  height: this.state.height,
+                  width: this.state.width,
+                  position: this.state.position,
+                  left: 0,
+                  top: 0,
+                }}
               ></div>
             )}
           </div>
           <br />
-          <div>
+          <div
+            style={{
+              zIndex: this.state.buttonZIndex,
+              position: this.state.buttonPosition,
+              right: 5,
+              top: 5,
+            }}
+          >
             <DefaultButton
-              onClick={() => this.setState({ isOpen: true })}
-              title="Maximize"
-              iconProps={{ iconName: "OpenInNewTab" }}
+              onClick={() => this.setDiv()}
+              title={this.state.buttonLabel}
+              iconProps={{ iconName: this.state.iconName }}
             />
           </div>
         </div>
-        <div className={styles.powerBiReactReport}>
+        {/* <div className={styles.powerBiReactReport}>
           <Panel
             onOpened={() => this.embedReport("embed-container1")}
             isOpen={this.state.isOpen}
@@ -141,28 +164,55 @@ export default class PowerBiReactReport extends React.Component<
             <div
               id="embed-container1"
               //className={styles.embedContainer}
-              className={styles.desktopView}
+              //className={styles.desktopView}
               style={mystyle.iframe}
             ></div>
           </Panel>
-        </div>
+        </div> */}
       </div>
     );
   }
 
+  private setDiv() {
+    if (!this.state.maxi) {
+      this.setState({
+        height: "100%",
+        width: "100%",
+        zIndex: 9999,
+        position: "fixed",
+        buttonZIndex: 9999,
+        buttonPosition: "fixed",
+        maxi: true,
+        iconName: "ChromeClose",
+        buttonLabel: "Close",
+      });
+    } else {
+      this.setState({
+        height: "700px",
+        width: "100%",
+        zIndex: 0,
+        position: "unset",
+        buttonZIndex: 0,
+        buttonPosition: "unset",
+        maxi: false,
+        iconName: "OpenInNewTab",
+        buttonLabel: "Maximize",
+      });
+    }
+  }
   public componentDidMount() {
     console.log("componentDidUpdate");
     this.embedReport("embed-container");
   }
 
-  public componentDidUpdate(
-    prevProps: IPowerBiReactReportProps,
-    prevState: IPowerBiReactReportState,
-    prevContext: any
-  ): void {
-    console.log("componentDidUpdate");
-    this.embedReport("embed-container");
-  }
+  // public componentDidUpdate(
+  //   prevProps: IPowerBiReactReportProps,
+  //   prevState: IPowerBiReactReportState,
+  //   prevContext: any
+  // ): void {
+  //   console.log("componentDidUpdate");
+  //   this.embedReport("embed-container");
+  // }
 
   private embedReport(embedContainer) {
     let embedTarget: HTMLElement = document.getElementById(embedContainer);
