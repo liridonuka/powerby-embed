@@ -7,6 +7,7 @@ export interface IPowerBiReactReportProps {
   defaultWorkspaceId: string;
   defaultReportId: string;
   defaultWidthToHeight: number;
+  guid: string;
 }
 
 export interface IPowerBiReactReportState {
@@ -14,4 +15,14 @@ export interface IPowerBiReactReportState {
   workspaceId: string;
   reportId: string;
   widthToHeight: number;
+  isOpen: boolean;
+  height: string;
+  width: string;
+  zIndex: number;
+  position: any;
+  buttonZIndex: number;
+  buttonPosition: any;
+  maxi: boolean;
+  iconName: string;
+  buttonLabel: string;
 }

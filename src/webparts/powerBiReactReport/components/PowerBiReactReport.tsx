@@ -4,14 +4,17 @@ import {
   IPowerBiReactReportProps,
   IPowerBiReactReportState,
 } from "./IPowerBiReactReportProps";
-
+import { DefaultButton, IDefaultSlotProps } from "office-ui-fabric-react";
 import {
   PowerBiWorkspace,
   PowerBiReport,
 } from "./../../../models/PowerBiModels";
+import * as pnp from "sp-pnp-js";
 import { PowerBiService } from "./../../../services/PowerBiService";
 import { PowerBiEmbeddingService } from "./../../../services/PowerBiEmbeddingService";
-
+import { Panel, PanelType } from "office-ui-fabric-react/lib/Panel";
+import { sp } from "sp-pnp-js";
+let guid;
 export default class PowerBiReactReport extends React.Component<
   IPowerBiReactReportProps,
   IPowerBiReactReportState
@@ -25,6 +28,16 @@ export default class PowerBiReactReport extends React.Component<
     reportId: this.props.defaultReportId,
     widthToHeight: this.props.defaultWidthToHeight,
     loading: false,
+    isOpen: false,
+    height: "700px",
+    width: "100%",
+    zIndex: 0,
+    position: "unset",
+    buttonZIndex: 0,
+    buttonPosition: "unset",
+    maxi: false,
+    iconName: "OpenInNewTab",
+    buttonLabel: "Maximize",
   };
 
   private reportCannotRender(): Boolean {
@@ -40,12 +53,18 @@ export default class PowerBiReactReport extends React.Component<
     let containerHeight =
       this.props.webPartContext.domElement.clientWidth /
       (this.state.widthToHeight / 100);
-
-    console.log("PowerBiReactReport.render");
+    const mystyle = {
+      iframe: {
+        //border: "1px solid black",
+        //borderStyle: "none",
+        height: "700px",
+      },
+    };
+    //console.log("PowerBiReactReport.render");
     return (
       <div className={styles.powerBiReactReport}>
         <div style={{ width: "100%" }}>
-          <div className={styles.column1}>
+          {/* <div className={styles.column1}>
             <div className={styles.navHeader}>Clocks</div>
             <ul>
               <li>Shangai</li>
@@ -92,8 +111,8 @@ export default class PowerBiReactReport extends React.Component<
                 </a>{" "}
               </li>
             </ul>
-          </div>
-          <div className={styles.column2}>
+          </div> */}
+          <div>
             {this.state.loading ? (
               <div id="loading" className={styles.loadingContainer}>
                 Calling to Power BI Service
@@ -105,34 +124,101 @@ export default class PowerBiReactReport extends React.Component<
             ) : (
               <div
                 id="embed-container"
-                className={styles.embedContainer}
-                style={{ height: containerHeight }}
+                //className={styles.embedContainer}
+                //className={styles.desktopView}
+                style={{
+                  zIndex: this.state.zIndex,
+                  height: this.state.height,
+                  width: this.state.width,
+                  position: this.state.position,
+                  left: 0,
+                  top: 0,
+                }}
               ></div>
             )}
           </div>
+          <br />
+          <div
+            style={{
+              zIndex: this.state.buttonZIndex,
+              position: this.state.buttonPosition,
+              right: 5,
+              top: 5,
+            }}
+          >
+            <DefaultButton
+              onClick={() => this.setDiv()}
+              title={this.state.buttonLabel}
+              iconProps={{ iconName: this.state.iconName }}
+            />
+          </div>
         </div>
+        {/* <div className={styles.powerBiReactReport}>
+          <Panel
+            onOpened={() => this.embedReport("embed-container1")}
+            isOpen={this.state.isOpen}
+            onDismiss={() => this.setState({ isOpen: false })}
+            type={PanelType.smallFluid}
+            closeButtonAriaLabel="Close"
+          >
+            <div
+              id="embed-container1"
+              //className={styles.embedContainer}
+              //className={styles.desktopView}
+              style={mystyle.iframe}
+            ></div>
+          </Panel>
+        </div> */}
       </div>
     );
   }
 
+  private setDiv() {
+    if (!this.state.maxi) {
+      this.setState({
+        height: "100%",
+        width: "100%",
+        zIndex: 9999,
+        position: "fixed",
+        buttonZIndex: 9999,
+        buttonPosition: "fixed",
+        maxi: true,
+        iconName: "ChromeClose",
+        buttonLabel: "Close",
+      });
+    } else {
+      this.setState({
+        height: "700px",
+        width: "100%",
+        zIndex: 0,
+        position: "unset",
+        buttonZIndex: 0,
+        buttonPosition: "unset",
+        maxi: false,
+        iconName: "OpenInNewTab",
+        buttonLabel: "Maximize",
+      });
+    }
+  }
   public componentDidMount() {
     console.log("componentDidUpdate");
-    this.embedReport();
+    this.embedReport("embed-container");
   }
 
-  public componentDidUpdate(
-    prevProps: IPowerBiReactReportProps,
-    prevState: IPowerBiReactReportState,
-    prevContext: any
-  ): void {
-    console.log("componentDidUpdate");
-    this.embedReport();
-  }
+  // public componentDidUpdate(
+  //   prevProps: IPowerBiReactReportProps,
+  //   prevState: IPowerBiReactReportState,
+  //   prevContext: any
+  // ): void {
+  //   console.log("componentDidUpdate");
+  //   this.embedReport("embed-container");
+  // }
 
-  private embedReport() {
-    let embedTarget: HTMLElement = document.getElementById("embed-container");
+  private embedReport(embedContainer) {
+    let embedTarget: HTMLElement = document.getElementById(embedContainer);
     if (!this.state.loading && !this.reportCannotRender()) {
       PowerBiService.GetReport(
+        this.props.guid,
         this.props.serviceScope,
         this.state.workspaceId,
         this.state.reportId

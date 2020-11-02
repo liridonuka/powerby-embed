@@ -9,7 +9,10 @@ import {
   IPropertyPaneDropdownOption,
   PropertyPaneSlider,
 } from "@microsoft/sp-property-pane";
-
+//import { sp } from "sp-pnp-js";
+import pnp from "sp-pnp-js";
+// import { sp } from "@pnp/sp";
+// import "@pnp/sp/profiles";
 import { ServiceScope } from "@microsoft/sp-core-library";
 
 import PowerBiReactReport from "./components/PowerBiReactReport";
@@ -22,6 +25,7 @@ export interface IPowerBiReactReportWebPartProps {
   workspaceId: string;
   reportId: string;
   widthToHeight: number;
+  guid: string;
 }
 
 export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
@@ -65,20 +69,27 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
   }
 
   public render(): void {
-    console.log("PowerBiReactReportWebPart.render");
-    const element: React.ReactElement<IPowerBiReactReportProps> = React.createElement(
-      PowerBiReactReport,
-      {
-        webPartContext: this.context,
-        serviceScope: this.context.serviceScope,
-        defaultWorkspaceId: this.properties.workspaceId,
-        defaultReportId: this.properties.reportId,
-        defaultWidthToHeight: this.properties.widthToHeight,
-      }
-    );
-    this.powerBiReactReport = <PowerBiReactReport>(
-      ReactDom.render(element, this.domElement)
-    );
+    let ab = "";
+    // this.GetUserProperties().then((i) => (ab = i));
+    console.log(ab);
+    //console.log(a);
+    //console.log("PowerBiReactReportWebPart.render");
+    this.GetUserProperties().then((i) => {
+      const element: React.ReactElement<IPowerBiReactReportProps> = React.createElement(
+        PowerBiReactReport,
+        {
+          webPartContext: this.context,
+          serviceScope: this.context.serviceScope,
+          defaultWorkspaceId: this.properties.workspaceId,
+          defaultReportId: this.properties.reportId,
+          defaultWidthToHeight: this.properties.widthToHeight,
+          guid: i,
+        }
+      );
+      this.powerBiReactReport = <PowerBiReactReport>(
+        ReactDom.render(element, this.domElement)
+      );
+    });
   }
 
   protected onPropertyPaneConfigurationStart(): void {
@@ -160,8 +171,7 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
       pages: [
         {
           header: {
-            description:
-              "A gratuitous demo of embeding Power BI reports using a React Web Part",
+            description: "Embeding Power BI reports using a React Web Part",
           },
           groups: [
             {
@@ -188,5 +198,20 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
         },
       ],
     };
+  }
+  private async GetUserProperties() {
+    let guid;
+    //const web = new Web(this.context.pageContext.web.absoluteUrl);
+    pnp.setup({ spfxContext: this.context });
+    await pnp.sp.profiles.myProperties.get().then(async (result) => {
+      await result.UserProfileProperties.forEach(async (property) => {
+        if (property.Key === "msOnline-ObjectId") {
+          guid = await property.Value;
+          //guid = property.value
+          //return guid;
+        }
+      });
+    });
+    return guid;
   }
 }

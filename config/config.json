@@ -9,10 +9,19 @@
           "manifest": "./src/webparts/powerBiReactReport/PowerBiReactReportWebPart.manifest.json"
         }
       ]
+    },
+    "buttons-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/buttons/ButtonsWebPart.js",
+          "manifest": "./src/webparts/buttons/ButtonsWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "PowerBiReactReportWebPartStrings": "lib/webparts/powerBiReactReport/loc/{locale}.js"
+    "PowerBiReactReportWebPartStrings": "lib/webparts/powerBiReactReport/loc/{locale}.js",
+    "ButtonsWebPartStrings": "lib/webparts/buttons/loc/{locale}.js"
   }
 }
