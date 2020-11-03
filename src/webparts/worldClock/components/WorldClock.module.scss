@@ -1,0 +1,47 @@
+@import "~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss";
+
+.worldTime {
+  background-color: rgb(253, 234, 218);
+  .container {
+    max-width: 700px;
+    margin: 0px auto;
+  }
+
+  .description {
+    @include ms-font-l;
+    color: $ms-color-black;
+    text-align: left;
+    //margin-bottom: 20px;
+    padding-top: 15px;
+    font-weight: 600;
+  }
+
+  .divHeader {
+    background-color: rgb(234, 0, 29);
+    width: 100%;
+    height: 30px;
+    padding-top: 12px;
+    padding-left: 10px;
+    vertical-align: bottom;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 5px solid #fff;
+  }
+  .divFull {
+    width: 100%;
+    display: inline-table;
+    background-color: rgb(253, 234, 218);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+  }
+  .secondColumn {
+    float: left;
+    width: 35%;
+  }
+  .thirdColumn {
+    float: right;
+    width: 65%;
+  }
+}

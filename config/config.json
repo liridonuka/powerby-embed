@@ -17,11 +17,20 @@
           "manifest": "./src/webparts/buttons/ButtonsWebPart.manifest.json"
         }
       ]
+    },
+    "world-clock-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/worldClock/WorldClockWebPart.js",
+          "manifest": "./src/webparts/worldClock/WorldClockWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "PowerBiReactReportWebPartStrings": "lib/webparts/powerBiReactReport/loc/{locale}.js",
-    "ButtonsWebPartStrings": "lib/webparts/buttons/loc/{locale}.js"
+    "ButtonsWebPartStrings": "lib/webparts/buttons/loc/{locale}.js",
+    "WorldClockWebPartStrings": "lib/webparts/worldClock/loc/{locale}.js"
   }
 }
