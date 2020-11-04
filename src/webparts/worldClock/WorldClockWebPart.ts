@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import { Version } from "@microsoft/sp-core-library";
+import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 import {
-  BaseClientSideWebPart,
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
   PropertyPaneDropdown,
   IPropertyPaneDropdownOption,
-} from "@microsoft/sp-webpart-base";
+} from "@microsoft/sp-property-pane";
 
 import * as strings from "WorldClockWebPartStrings";
 import WorldClock from "./components/WorldClock";

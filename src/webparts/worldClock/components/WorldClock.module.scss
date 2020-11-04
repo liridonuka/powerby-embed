@@ -8,7 +8,7 @@
   }
 
   .description {
-    @include ms-font-l;
+    @include ms-font-m;
     color: $ms-color-black;
     text-align: left;
     //margin-bottom: 20px;
@@ -19,7 +19,7 @@
   .divHeader {
     background-color: rgb(234, 0, 29);
     width: 100%;
-    height: 30px;
+    height: 23px;
     padding-top: 12px;
     padding-left: 10px;
     vertical-align: bottom;
@@ -30,18 +30,27 @@
   }
   .divFull {
     width: 100%;
-    display: inline-table;
+    display: inline-flex;
     background-color: rgb(253, 234, 218);
     padding-top: 5px;
-    padding-bottom: 5px;
+    //padding-bottom: 5px;
     padding-left: 10px;
+  }
+  .firstColumn {
+    float: left;
+    width: 50px;
+    min-width: 50px;
   }
   .secondColumn {
     float: left;
-    width: 35%;
+    width: 100px;
+    min-width: 100px;
+    padding-left: 10px;
   }
   .thirdColumn {
-    float: right;
-    width: 65%;
+    float: left;
+    padding-left: 10px;
+    // width: 80px;
+    // min-width: 80px;
   }
 }

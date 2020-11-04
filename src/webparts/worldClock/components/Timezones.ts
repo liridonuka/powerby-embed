@@ -592,6 +592,12 @@ export class TimeZones {
       displayName: "(UTC+07:00) Hovd",
     },
     {
+      offsetMinutes: 480,
+      name: "Shanghai Standard Time",
+      id: 136,
+      displayName: "(UTC+07:00) Shanghai",
+    },
+    {
       offsetMinutes: 420,
       name: "North Asia Standard Time",
       id: 98,
