@@ -125,7 +125,7 @@ export default class PowerBiReactReport extends React.Component<
               <div
                 id="embed-container"
                 //className={styles.embedContainer}
-                //className={styles.desktopView}
+                className={styles.desktopView}
                 style={{
                   zIndex: this.state.zIndex,
                   height: this.state.height,
