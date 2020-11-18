@@ -3,10 +3,9 @@
   "solution": {
     "name": "powerbi-embed-client-side-solution",
     "id": "3dae5011-2fb0-4ac4-99af-5d111285f652",
-    "version": "1.1.19.0",
+    "version": "1.2.0.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
-
     "webApiPermissionRequests": [
       {
         "resource": "Power BI Service",
@@ -24,7 +23,25 @@
         "resource": "Power BI Service",
         "scope": "Dashboard.Read.All"
       }
-    ]
+    ],
+    "features": [
+      {
+        "title": "Application Extension - Deployment of custom action.",
+        "description": "Deploys a custom action with ClientSideComponentId association",
+        "id": "f759d626-8e42-42e1-adf5-52698b885050",
+        "version": "1.0.0.0",
+        "assets": {
+          "elementManifests": ["elements.xml", "ClientSideInstance.xml"]
+        }
+      }
+    ],
+    "developer": {
+      "name": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "websiteUrl": "",
+      "mpnId": ""
+    }
   },
   "paths": {
     "zippedPackage": "solution/powerbi-embed.sppkg"

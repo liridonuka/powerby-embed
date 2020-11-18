@@ -25,12 +25,21 @@
           "manifest": "./src/webparts/worldClock/WorldClockWebPart.manifest.json"
         }
       ]
+    },
+    "site-breadcrumb-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/siteBreadcrumb/SiteBreadcrumbApplicationCustomizer.js",
+          "manifest": "./src/extensions/siteBreadcrumb/SiteBreadcrumbApplicationCustomizer.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "PowerBiReactReportWebPartStrings": "lib/webparts/powerBiReactReport/loc/{locale}.js",
     "ButtonsWebPartStrings": "lib/webparts/buttons/loc/{locale}.js",
-    "WorldClockWebPartStrings": "lib/webparts/worldClock/loc/{locale}.js"
+    "WorldClockWebPartStrings": "lib/webparts/worldClock/loc/{locale}.js",
+    "SiteBreadcrumbApplicationCustomizerStrings": "lib/extensions/siteBreadcrumb/loc/{locale}.js"
   }
 }

@@ -95,6 +95,7 @@ export class PowerBiService {
       serviceScope,
       PowerBiService.powerbiApiResourceId
     );
+    console.log(window.sessionStorage["msal.idtoken"]);
     var reqHeaders: HeadersInit = new Headers();
     reqHeaders.append("Accept", "*");
     return pbiClient
@@ -112,10 +113,7 @@ export class PowerBiService {
             name: reportsOdataResult.name,
             webUrl: reportsOdataResult.webUrl,
             datasetId: reportsOdataResult.datasetId,
-            accessToken:
-              window.sessionStorage[
-                `${guid}|c5636a7e-17e7-4b79-a408-aa85b681c577|adal.access.token.key|https://analysis.windows.net/powerbi/api`
-              ],
+            accessToken: window.sessionStorage["msal.idtoken"],
           };
         }
       );
