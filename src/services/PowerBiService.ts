@@ -84,7 +84,7 @@ export class PowerBiService {
       });
   }
   public static GetReport(
-    guid: string,
+    acctok: string,
     serviceScope: ServiceScope,
     workspaceId: string,
     reportId: string
@@ -95,7 +95,6 @@ export class PowerBiService {
       serviceScope,
       PowerBiService.powerbiApiResourceId
     );
-    console.log(window.sessionStorage["msal.idtoken"]);
     var reqHeaders: HeadersInit = new Headers();
     reqHeaders.append("Accept", "*");
     return pbiClient
@@ -113,12 +112,10 @@ export class PowerBiService {
             name: reportsOdataResult.name,
             webUrl: reportsOdataResult.webUrl,
             datasetId: reportsOdataResult.datasetId,
-            accessToken: window.sessionStorage["msal.idtoken"],
+            accessToken: acctok,
           };
         }
       );
-    //c5636a7e-17e7-4b79-a408-aa85b681c577
-    //455d03e1-a7c8-46c4-8bae-b2f70a9990ed
   }
 
   public static GetDashboards(

@@ -9,6 +9,14 @@ import {
   PowerBiWorkspace,
   PowerBiReport,
 } from "./../../../models/PowerBiModels";
+import {
+  AadHttpClient,
+  HttpClient,
+  IHttpClientOptions,
+  HttpClientResponse,
+  AadHttpClientFactory,
+  AadTokenProvider,
+} from "@microsoft/sp-http";
 import * as pnp from "sp-pnp-js";
 import { PowerBiService } from "./../../../services/PowerBiService";
 import { PowerBiEmbeddingService } from "./../../../services/PowerBiEmbeddingService";
@@ -215,16 +223,41 @@ export default class PowerBiReactReport extends React.Component<
   // }
 
   private embedReport(embedContainer) {
-    let embedTarget: HTMLElement = document.getElementById(embedContainer);
-    if (!this.state.loading && !this.reportCannotRender()) {
-      PowerBiService.GetReport(
-        this.props.guid,
-        this.props.serviceScope,
-        this.state.workspaceId,
-        this.state.reportId
-      ).then((report: PowerBiReport) => {
-        PowerBiEmbeddingService.embedReport(report, embedTarget);
-      });
-    }
+    this.adToken().then((i) => {
+      let embedTarget: HTMLElement = document.getElementById(embedContainer);
+      if (!this.state.loading && !this.reportCannotRender()) {
+        PowerBiService.GetReport(
+          i,
+          this.props.serviceScope,
+          this.state.workspaceId,
+          this.state.reportId
+        ).then((report: PowerBiReport) => {
+          PowerBiEmbeddingService.embedReport(report, embedTarget);
+        });
+      }
+    });
+  }
+
+  // private async getITem() {
+  //   pnp.setup({ spfxContext: this.props.webPartContext });
+  //   const item: any[] = await pnp.sp.web.lists
+  //     .getByTitle("Experimental")
+  //     .items.select("Title", "act")
+  //     .filter("Title eq 'NNN'")
+  //     .getAll();
+
+  //   return item.map((i) => i.act);
+  // }
+
+  private adToken(): Promise<any> {
+    return this.props.webPartContext.aadTokenProviderFactory
+      .getTokenProvider()
+      .then(
+        (tokenProvider: AadTokenProvider): Promise<string> => {
+          return tokenProvider.getToken(
+            "https://analysis.windows.net/powerbi/api"
+          );
+        }
+      );
   }
 }

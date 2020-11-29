@@ -25,12 +25,10 @@ export interface IPowerBiReactReportWebPartProps {
   workspaceId: string;
   reportId: string;
   widthToHeight: number;
-  guid: string;
+  acctok: string;
 }
 
-export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
-  IPowerBiReactReportWebPartProps
-> {
+export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<IPowerBiReactReportWebPartProps> {
   private powerBiReactReport: PowerBiReactReport;
 
   private workspaceOptions: IPropertyPaneDropdownOption[];
@@ -39,9 +37,7 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
   private fetchWorkspaceOptions(): Promise<IPropertyPaneDropdownOption[]> {
     return PowerBiService.GetWorkspaces(this.context.serviceScope).then(
       (workspaces: PowerBiWorkspace[]) => {
-        var options: Array<IPropertyPaneDropdownOption> = new Array<
-          IPropertyPaneDropdownOption
-        >();
+        var options: Array<IPropertyPaneDropdownOption> = new Array<IPropertyPaneDropdownOption>();
         workspaces.map((workspace: PowerBiWorkspace) => {
           options.push({ key: workspace.id, text: workspace.name });
         });
@@ -58,9 +54,7 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
       this.context.serviceScope,
       this.properties.workspaceId
     ).then((reports: PowerBiReport[]) => {
-      var options: Array<IPropertyPaneDropdownOption> = new Array<
-        IPropertyPaneDropdownOption
-      >();
+      var options: Array<IPropertyPaneDropdownOption> = new Array<IPropertyPaneDropdownOption>();
       reports.map((report: PowerBiReport) => {
         options.push({ key: report.id, text: report.name });
       });
@@ -74,22 +68,21 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
     console.log(ab);
     //console.log(a);
     //console.log("PowerBiReactReportWebPart.render");
-    this.GetUserProperties().then((i) => {
-      const element: React.ReactElement<IPowerBiReactReportProps> = React.createElement(
-        PowerBiReactReport,
-        {
-          webPartContext: this.context,
-          serviceScope: this.context.serviceScope,
-          defaultWorkspaceId: this.properties.workspaceId,
-          defaultReportId: this.properties.reportId,
-          defaultWidthToHeight: this.properties.widthToHeight,
-          guid: i,
-        }
-      );
-      this.powerBiReactReport = <PowerBiReactReport>(
-        ReactDom.render(element, this.domElement)
-      );
-    });
+
+    const element: React.ReactElement<IPowerBiReactReportProps> = React.createElement(
+      PowerBiReactReport,
+      {
+        webPartContext: this.context,
+        serviceScope: this.context.serviceScope,
+        defaultWorkspaceId: this.properties.workspaceId,
+        defaultReportId: this.properties.reportId,
+        defaultWidthToHeight: this.properties.widthToHeight,
+        acctok: this.properties.acctok,
+      }
+    );
+    this.powerBiReactReport = <PowerBiReactReport>(
+      ReactDom.render(element, this.domElement)
+    );
   }
 
   protected onPropertyPaneConfigurationStart(): void {
@@ -187,11 +180,14 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
                   options: this.reportOptions,
                   disabled: !this.reportsFetched,
                 }),
-                PropertyPaneSlider("widthToHeight", {
-                  label: "Width to Height Perentage",
-                  min: 25,
-                  max: 400,
+                PropertyPaneTextField("acctok", {
+                  label: "Acctok",
                 }),
+                // PropertyPaneSlider("widthToHeight", {
+                //   label: "Width to Height Perentage",
+                //   min: 25,
+                //   max: 400,
+                // }),
               ],
             },
           ],
@@ -199,19 +195,29 @@ export default class PowerBiReactReportWebPart extends BaseClientSideWebPart<
       ],
     };
   }
-  private async GetUserProperties() {
-    let guid;
-    //const web = new Web(this.context.pageContext.web.absoluteUrl);
-    pnp.setup({ spfxContext: this.context });
-    await pnp.sp.profiles.myProperties.get().then(async (result) => {
-      await result.UserProfileProperties.forEach(async (property) => {
-        if (property.Key === "msOnline-ObjectId") {
-          guid = await property.Value;
-          //guid = property.value
-          //return guid;
-        }
-      });
-    });
-    return guid;
-  }
+  // private async GetUserProperties() {
+  //   let guid;
+  //   //const web = new Web(this.context.pageContext.web.absoluteUrl);
+  //   pnp.setup({ spfxContext: this.context });
+  //   await pnp.sp.profiles.myProperties.get().then(async (result) => {
+  //     await result.UserProfileProperties.forEach(async (property) => {
+  //       if (property.Key === "msOnline-ObjectId") {
+  //         guid = await property.Value;
+  //         //guid = property.value
+  //         //return guid;
+  //       }
+  //     });
+  //   });
+  //   return guid;
+  // }
+  // private async getITem() {
+  //   pnp.setup({ spfxContext: this.context });
+  //   const item: any[] = await pnp.sp.web.lists
+  //     .getByTitle("Experimental")
+  //     .items.select("Title", "act")
+  //     .filter("Title eq 'NNN'")
+  //     .getAll();
+
+  //   return item.map((i) => i.act);
+  // }
 }
